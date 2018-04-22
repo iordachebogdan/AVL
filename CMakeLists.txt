@@ -3,4 +3,4 @@ project(AVL)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(AVL main.cpp bstbase.h util_vector.h)
+add_executable(AVL main.cpp bstbase.h util_vector.h avl.h)

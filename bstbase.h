@@ -21,8 +21,8 @@ namespace bst {
         virtual ~NodeBase() = default;
 
         const T& get_data() const;
-        virtual void insert(const T&) = 0;
-        virtual void erase(const T&) = 0;
+        virtual NodeBase* insert(const T&) = 0;
+        virtual NodeBase* erase(const T&) = 0;
         virtual NodeBase* find(const T&) = 0;
         virtual NodeBase* get_next() = 0;
       protected:
@@ -176,7 +176,7 @@ namespace bst {
 
     template <typename T>
     void BSTBase<T>::erase(const T &value) {
-        if (root_ != nullptr)
+        if (root_ != nullptr && !(find(value) == end()))
             root_->erase(value);
     }
 
