@@ -49,11 +49,12 @@ namespace bst {
             const T& operator*() const;
             const T* operator->();
             bool operator==(const iterator&);
+            bool operator!=(const iterator&);
           protected:
             NodeBase<T>* ptr_;
         };
 
-        BSTBase(NodeBase<T>* = nullptr);
+        explicit BSTBase(NodeBase<T>* = nullptr);
         explicit BSTBase(const util::Vector<T>&);
         BSTBase(const BSTBase&);
         BSTBase& operator = (const BSTBase&);
@@ -134,24 +135,28 @@ namespace bst {
     }
 
     template <typename T>
+    bool BSTBase<T>::iterator::operator!=(const iterator &rhs) {
+        return ptr_ != rhs.ptr_;
+    }
+
+    template <typename T>
     BSTBase<T>::BSTBase(NodeBase<T> *root) : root_(root) {}
 
     template <typename T>
     BSTBase<T>::BSTBase(const util::Vector<T> &values) : root_(nullptr) {
-        for (typename util::Vector<T>::const_iterator it = values.begin(); it != values.end(); ++it)
-            insert(*it);
     }
 
     template <typename T>
-    BSTBase<T>::BSTBase(const BSTBase &rhs) : BSTBase(rhs.root_->inorder_traversal()) {
+    BSTBase<T>::BSTBase(const BSTBase<T> &rhs) : BSTBase(rhs.root_->inorder_traversal()) {
     }
 
     template <typename T>
-    BSTBase<T>& BSTBase<T>::operator=(const BSTBase &rhs) {
+    BSTBase<T>& BSTBase<T>::operator=(const BSTBase<T> &rhs) {
         if (this == &rhs)
             return (*this);
         clear();
         BSTBase(rhs.root_->inorder_traversal());
+        return (*this);
     }
 
     template <typename T>
@@ -177,7 +182,7 @@ namespace bst {
     template <typename T>
     void BSTBase<T>::erase(const T &value) {
         if (root_ != nullptr && !(find(value) == end()))
-            root_->erase(value);
+            root_ = root_->erase(value);
     }
 
     template <typename T>
