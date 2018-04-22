@@ -14,8 +14,10 @@ int main() {
     ptr->insert(20);
     ptr->erase(7);
     ptr->erase(3);
+    my_set = my_set2 = my_set2;
+    my_set.insert(1);
 
-    for (bst::AVL<int>::iterator it = my_set2.begin(); it != my_set2.end(); ++it) {
+    for (bst::AVL<int>::iterator it = my_set.begin(); it != my_set.end(); ++it) {
         std::cout << *it << ' ';
     }
     std::cout << std::endl;

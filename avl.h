@@ -215,8 +215,9 @@ namespace bst {
         if (this == &rhs)
             return (*this);
         BSTBase<T>::clear();
-        AVL(dynamic_cast<NodeAVL<T>*>(rhs.root_)->inorder_traversal());
-        return (*this);
+        auto values = dynamic_cast<NodeAVL<T>*>(rhs.root_)->inorder_traversal();
+        for (typename util::Vector<T>::const_iterator it = values.begin(); it != values.end(); ++it)
+            insert(*it);
     }
 
     template <typename T>
