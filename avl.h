@@ -15,12 +15,12 @@ namespace bst {
 
     template <typename T>
     class NodeAVL : public NodeBase<T> {
-      public:
+      protected:
         explicit NodeAVL(NodeAVL* = nullptr, NodeAVL* = nullptr, T = T(), NodeAVL* = nullptr);
         NodeAVL(const NodeAVL&) = delete;
         NodeAVL& operator=(const NodeAVL&) = delete;
         virtual ~NodeAVL() = default;
-
+      public:
         NodeBase<T>* insert(const T&);
         NodeBase<T>* erase(const T&);
         int get_height() const;
@@ -29,7 +29,7 @@ namespace bst {
       protected:
         void update();
         NodeAVL* rotate_left();
-        NodeAVL*rotate_right();
+        NodeAVL* rotate_right();
         NodeAVL* balance();
 
         NodeAVL* parent_;
@@ -208,14 +208,16 @@ namespace bst {
     }
 
     template <typename T>
-    AVL<T>::AVL(const AVL<T> &rhs) : AVL<T>(dynamic_cast<NodeAVL<T>*>(rhs.root_)->inorder_traversal()) {}
+    AVL<T>::AVL(const AVL<T> &rhs) :
+            AVL<T>(rhs.root_ == nullptr ? util::Vector<T>() : rhs.root_->inorder_traversal()) {
+    }
 
     template <typename T>
     AVL<T>& AVL<T>::operator=(const AVL<T> &rhs) {
         if (this == &rhs)
             return (*this);
         BSTBase<T>::clear();
-        auto values = dynamic_cast<NodeAVL<T>*>(rhs.root_)->inorder_traversal();
+        auto values = rhs.root_ == nullptr ? util::Vector<T>() : rhs.root_->inorder_traversal();
         for (typename util::Vector<T>::const_iterator it = values.begin(); it != values.end(); ++it)
             insert(*it);
     }
