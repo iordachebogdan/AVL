@@ -55,9 +55,8 @@ namespace bst {
         };
 
         explicit BSTBase(NodeBase<T>* = nullptr);
-        explicit BSTBase(const util::Vector<T>&);
-        BSTBase(const BSTBase&);
-        BSTBase& operator = (const BSTBase&);
+        BSTBase(const BSTBase&) = delete;
+        BSTBase& operator = (const BSTBase&) = delete;
         virtual ~BSTBase();
 
         iterator begin();
@@ -141,23 +140,6 @@ namespace bst {
 
     template <typename T>
     BSTBase<T>::BSTBase(NodeBase<T> *root) : root_(root) {}
-
-    template <typename T>
-    BSTBase<T>::BSTBase(const util::Vector<T> &values) : root_(nullptr) {
-    }
-
-    template <typename T>
-    BSTBase<T>::BSTBase(const BSTBase<T> &rhs) : BSTBase(rhs.root_->inorder_traversal()) {
-    }
-
-    template <typename T>
-    BSTBase<T>& BSTBase<T>::operator=(const BSTBase<T> &rhs) {
-        if (this == &rhs)
-            return (*this);
-        clear();
-        BSTBase(rhs.root_->inorder_traversal());
-        return (*this);
-    }
 
     template <typename T>
     BSTBase<T>::~BSTBase() {

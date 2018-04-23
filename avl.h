@@ -202,7 +202,7 @@ namespace bst {
     AVL<T>::AVL(NodeAVL<T> *root) : BSTBase<T>(root) {}
 
     template <typename T>
-    AVL<T>::AVL(const util::Vector<T> &values) : BSTBase<T>(values) {
+    AVL<T>::AVL(const util::Vector<T> &values) {
         for (typename util::Vector<T>::const_iterator it = values.begin(); it != values.end(); ++it)
             insert(*it);
     }
