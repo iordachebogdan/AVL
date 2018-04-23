@@ -6,7 +6,6 @@
 #define AVL_AVL_H
 
 #include "bstbase.h"
-#include <algorithm>
 
 namespace bst {
 
