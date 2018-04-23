@@ -22,5 +22,8 @@ int main() {
     }
     std::cout << std::endl;
 
+    my_set.print_leaves(std::cout);
+    std::cout << my_set << std::endl;
+
     return 0;
 }

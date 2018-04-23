@@ -6,6 +6,7 @@
 #define AVL_AVL_H
 
 #include "bstbase.h"
+#include <iostream>
 
 namespace bst {
 
@@ -46,12 +47,22 @@ namespace bst {
         virtual ~AVL();
 
         void insert(const T&);
-      protected:
+        void print_leaves(std::ostream&);
+
+        template <typename U>
+        friend std::istream& operator >> (std::istream& in, AVL<U>& avl);
+        template <typename U>
+        friend std::ostream& operator << (std::ostream& out, const AVL<U>& avl);
+        AVL operator + (const AVL&) const;
+        //AVL operator - (const AVL&) const;
+        //AVL operator * (const AVL&) const;
+      private:
+        void print_leaves(NodeAVL<T>*, std::ostream&);
     };
 
     //implementation section
     template <typename T>
-    NodeAVL<T>::NodeAVL(NodeAVL *left, NodeAVL *right, T data, NodeAVL* parent) :
+    NodeAVL<T>::NodeAVL(NodeAVL<T> *left, NodeAVL<T> *right, T data, NodeAVL<T>* parent) :
             NodeBase<T>(left, right, data),
             parent_(parent) {
         if (left != nullptr) left->parent_ = this;
@@ -233,6 +244,50 @@ namespace bst {
             return;
         }
         this->root_ = this->root_->insert(value);
+    }
+
+    template <typename T>
+    void AVL<T>::print_leaves(std::ostream& out) {
+        print_leaves(dynamic_cast<NodeAVL<T>*>(this->root_), out);
+        out << '\n';
+    }
+
+    template <typename T>
+    void AVL<T>::print_leaves(NodeAVL<T> *node, std::ostream& out) {
+        if (node == nullptr)
+            return;
+        if (node->left_ == nullptr && node->right_ == nullptr)
+            out << node->get_data() << ' ';
+        print_leaves(dynamic_cast<NodeAVL<T>*>(node->left_), out);
+        print_leaves(dynamic_cast<NodeAVL<T>*>(node->right_), out);
+    }
+
+    template <typename T>
+    std::istream& operator >> (std::istream& in, AVL<T>& avl) {
+        avl.BSTBase<T>::clear();
+        int num_values; in >> num_values;
+        for (int i = 0; i < num_values; ++i) {
+            T value; in >> value;
+            avl.insert(value);
+        }
+        return in;
+    }
+
+    template <typename T>
+    std::ostream& operator << (std::ostream& out, const AVL<T>& avl) {
+        auto traversal = avl.root_->inorder_traversal();
+        for (auto it = traversal.begin(); it != traversal.end(); ++it)
+            out << *it << ' ';
+        return out;
+    }
+
+    template <typename T>
+    AVL<T> AVL<T>::operator+(const AVL &rhs) const {
+        auto traversal = this->root_->inorder_traversal();
+        auto traversal2 = rhs.root_->inorder_traversal();
+        for (auto it = traversal2.begin(); it != traversal2.end(); ++it)
+            traversal.push_back(*it);
+        return AVL<T>(traversal);
     }
 
 }
