@@ -232,6 +232,7 @@ namespace bst {
         auto values = rhs.root_ == nullptr ? util::Vector<T>() : rhs.root_->inorder_traversal();
         for (typename util::Vector<T>::const_iterator it = values.begin(); it != values.end(); ++it)
             insert(*it);
+        return *this;
     }
 
     template <typename T>
