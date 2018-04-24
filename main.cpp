@@ -16,14 +16,18 @@ int main() {
     ptr->erase(3);
     my_set = my_set2 = my_set2;
     my_set.insert(1);
+    my_set2.erase(6);
 
-    for (bst::AVL<int>::iterator it = my_set.begin(); it != my_set.end(); ++it) {
-        std::cout << *it << ' ';
-    }
+    std::cout << my_set;
     std::cout << std::endl;
 
     my_set.print_leaves(std::cout);
-    std::cout << my_set << std::endl;
+    std::cout << my_set2 << std::endl;
+
+    std::cout << my_set2 - my_set << std::endl;
+    std::cout << my_set2 + my_set << std::endl;
+    std::cout << my_set2 * my_set << std::endl;
+    std::cout << my_set - my_set2 << std::endl;
 
     return 0;
 }

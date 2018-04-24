@@ -25,7 +25,7 @@ namespace bst {
         virtual NodeBase* erase(const T&) = 0;
         virtual NodeBase* find(const T&) = 0;
         virtual NodeBase* get_next() = 0;
-        util::Vector<T> inorder_traversal();
+        util::Vector<T> inorder_traversal() const;
       protected:
         void set_data(const T&);
 
@@ -47,7 +47,7 @@ namespace bst {
             iterator& operator++();
             iterator operator++(int);
             const T& operator*() const;
-            const T* operator->();
+            const T* operator->() const;
             bool operator==(const iterator&) const;
             bool operator!=(const iterator&) const;
           protected:
@@ -59,11 +59,12 @@ namespace bst {
         BSTBase& operator = (const BSTBase&) = delete;
         virtual ~BSTBase();
 
-        iterator begin();
-        iterator end();
+        iterator begin() const;
+        iterator end() const;
+        bool empty() const;
         virtual void insert(const T&) = 0;
         void erase(const T&);
-        iterator find(const T&);
+        iterator find(const T&) const;
         void clear();
       protected:
         void dump(NodeBase<T>*);
@@ -90,7 +91,7 @@ namespace bst {
     }
 
     template <typename T>
-    util::Vector<T> NodeBase<T>::inorder_traversal() {
+    util::Vector<T> NodeBase<T>::inorder_traversal() const {
         util::Vector<T> left_traversal = (left_ == nullptr ? util::Vector<T>() : left_->inorder_traversal());
         util::Vector<T> right_traversal = (right_ == nullptr ? util::Vector<T>() : right_->inorder_traversal());
         util::Vector<T> traversal;
@@ -124,7 +125,7 @@ namespace bst {
     }
 
     template <typename T>
-    const T* BSTBase<T>::iterator::operator->() {
+    const T* BSTBase<T>::iterator::operator->() const {
         return &ptr_->get_data();
     }
 
@@ -147,7 +148,7 @@ namespace bst {
     }
 
     template <typename T>
-    typename BSTBase<T>::iterator BSTBase<T>::begin() {
+    typename BSTBase<T>::iterator BSTBase<T>::begin() const {
         if (root_ == nullptr)
             return iterator();
         NodeBase<T>* aux = root_;
@@ -157,8 +158,13 @@ namespace bst {
     }
 
     template <typename T>
-    typename BSTBase<T>::iterator BSTBase<T>::end() {
+    typename BSTBase<T>::iterator BSTBase<T>::end() const {
         return iterator();
+    }
+
+    template <typename T>
+    bool BSTBase<T>::empty() const {
+        return root_ == nullptr;
     }
 
     template <typename T>
@@ -168,7 +174,7 @@ namespace bst {
     }
 
     template <typename T>
-    typename BSTBase<T>::iterator BSTBase<T>::find(const T &value) {
+    typename BSTBase<T>::iterator BSTBase<T>::find(const T &value) const {
         if (root_ == nullptr)
             return iterator();
         else

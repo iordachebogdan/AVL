@@ -54,8 +54,8 @@ namespace bst {
         template <typename U>
         friend std::ostream& operator << (std::ostream& out, const AVL<U>& avl);
         AVL operator + (const AVL&) const;
-        //AVL operator - (const AVL&) const;
-        //AVL operator * (const AVL&) const;
+        AVL operator - (const AVL&) const;
+        AVL operator * (const AVL&) const;
       private:
         void print_leaves(NodeAVL<T>*, std::ostream&);
     };
@@ -97,6 +97,8 @@ namespace bst {
         if (this->data_ == value) {
             if (this->left_ == nullptr || this->right_ == nullptr) {
                 res = dynamic_cast<NodeAVL<T>*>(this->left_ == nullptr ? this->right_ : this->left_);
+                if (res != nullptr)
+                    res->parent_ = this->parent_;
                 delete this;
                 return res;
             }
@@ -275,6 +277,8 @@ namespace bst {
 
     template <typename T>
     std::ostream& operator << (std::ostream& out, const AVL<T>& avl) {
+        if (avl.empty())
+            return out;
         auto traversal = avl.root_->inorder_traversal();
         for (auto it = traversal.begin(); it != traversal.end(); ++it)
             out << *it << ' ';
@@ -283,11 +287,27 @@ namespace bst {
 
     template <typename T>
     AVL<T> AVL<T>::operator+(const AVL &rhs) const {
-        auto traversal = this->root_->inorder_traversal();
-        auto traversal2 = rhs.root_->inorder_traversal();
-        for (auto it = traversal2.begin(); it != traversal2.end(); ++it)
-            traversal.push_back(*it);
-        return AVL<T>(traversal);
+        AVL<T> res(*this);
+        for (auto it = rhs.begin(); it != rhs.end(); ++it)
+            res.insert(*it);
+        return res;
+    }
+
+    template <typename T>
+    AVL<T> AVL<T>::operator-(const AVL &rhs) const {
+        AVL<T> res(*this);
+        for (auto it = rhs.begin(); it != rhs.end(); ++it)
+            res.erase(*it);
+        return res;
+    }
+
+    template <typename T>
+    AVL<T> AVL<T>::operator*(const AVL &rhs) const {
+        AVL<T> res;
+        for (auto it = rhs.begin(); it != rhs.end(); ++it)
+            if (this->find(*it) != this->end())
+                res.insert(*it);
+        return res;
     }
 
 }
