@@ -108,6 +108,8 @@ namespace bst {
 
     template <typename T>
     typename BSTBase<T>::iterator& BSTBase<T>::iterator::operator++() {
+        if (ptr_ == nullptr)
+            return *this;
         ptr_ = ptr_->get_next();
         return *this;
     }

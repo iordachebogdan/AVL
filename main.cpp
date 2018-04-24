@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "avl.h"
 
 int main() {
@@ -28,6 +29,13 @@ int main() {
     std::cout << my_set2 + my_set << std::endl;
     std::cout << my_set2 * my_set << std::endl;
     std::cout << my_set - my_set2 << std::endl;
+
+    bst::BSTBase<int>* set = new bst::AVL<int>;
+    for (int i = 1; i <= 100000; ++i)
+        set->insert(rand() % 10000);
+    for (int i = 1; i <= 50000; ++i)
+        set->erase(rand() % 10000);
+    std::cout << *dynamic_cast<bst::AVL<int>*>(set) << std::endl;
 
     return 0;
 }
