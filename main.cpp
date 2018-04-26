@@ -39,6 +39,8 @@ class Demo {
         fout << my_set2_ref * my_set << std::endl;
         fout << my_set - my_set2_ref << std::endl << std::endl;
 
+        std::cerr << ((my_set2_ref - my_set) == (my_set2_ref - (my_set2_ref * my_set)) ? "OK!" : "Nope..");
+
         auto it = my_set2_ref.begin();
         for (int i = 0; i < 10; ++i)
             it++;

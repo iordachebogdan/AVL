@@ -53,6 +53,7 @@ namespace bst {
         friend std::istream& operator >> (std::istream& in, AVL<U>& avl);
         template <typename U>
         friend std::ostream& operator << (std::ostream& out, const AVL<U>& avl);
+        bool operator == (const AVL&) const;
         AVL operator + (const AVL&) const;
         AVL operator - (const AVL&) const;
         AVL operator * (const AVL&) const;
@@ -284,6 +285,18 @@ namespace bst {
         for (auto it = traversal.begin(); it != traversal.end(); ++it)
             out << *it << ' ';
         return out;
+    }
+
+    template <typename T>
+    bool AVL<T>::operator==(const AVL &rhs) const {
+        auto traversal1 = this->root_->inorder_traversal();
+        auto traversal2 = rhs.root_->inorder_traversal();
+        if (traversal1.size() != traversal2.size())
+            return false;
+        for (int i = 0; i < traversal1.size(); ++i)
+            if (traversal1[i] != traversal2[i])
+                return false;
+        return true;
     }
 
     template <typename T>
